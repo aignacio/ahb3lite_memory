@@ -269,11 +269,23 @@ module ahb3lite_sram1rw #(
   // -gen_val combines current content with write-content based on byte-enables
   // -either combine the memory's content with the new write data
   //  or update the local copy with new write data
-  always @(posedge HCLK)
-    if (we) dout_local <= gen_val( use_local_dout ? dout_local : dout,
-                                   HWDATA,
-                                   be);
+  // always @(posedge HCLK)
+  //   if (we) dout_local <= gen_val( use_local_dout ? dout_local : dout,
+  //                                  HWDATA,
+  //                                  be);
 
+  always @(posedge HCLK) begin
+    if (we) begin
+      if (use_local_dout) begin
+        for (int n=0; n < BE_SIZE; n++)
+          dout_local[n*8 +: 8] <= be[n] ? HWDATA[n*8 +: 8] : dout_local[n*8 +: 8];
+      end
+      else begin
+        for (int n=0; n < BE_SIZE; n++)
+          dout_local[n*8 +: 8] <= be[n] ? HWDATA[n*8 +: 8] : dout[n*8 +: 8];
+      end
+    end
+  end
 
   //Is there read/write contention on the memory?
   always @(posedge HCLK)
