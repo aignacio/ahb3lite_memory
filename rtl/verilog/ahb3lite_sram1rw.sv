@@ -56,16 +56,16 @@
 //  TECHNOLOGY                 Target technology        GENERIC
 //  REGISTERED_OUTPUT [YES,NO] Registered outputs?      NO
 // ------------------------------------------------------------------
-// REUSE ISSUES 
+// REUSE ISSUES
 //   Reset Strategy      : external asynchronous active low; HRESETn
 //   Clock Domains       : HCLK, rising edge
-//   Critical Timing     : 
+//   Critical Timing     :
 //   Test Features       : na
 //   Asynchronous I/F    : no
 //   Scan Methodology    : na
 //   Instantiations      : rl_ram_1r1w
 //   Synthesizable (y/n) : Yes
-//   Other               :                                         
+//   Other               :
 // -FHDR-------------------------------------------------------------
 
 
@@ -110,7 +110,7 @@ module ahb3lite_sram1rw #(
   localparam REAL_MEM_DEPTH = MEM_DEPTH > MEM_SIZE_DEPTH ? MEM_DEPTH : MEM_SIZE_DEPTH;
   localparam MEM_ABITS      = $clog2(REAL_MEM_DEPTH);
   localparam MEM_ABITS_LSB  = $clog2(BE_SIZE);
-  
+
 
   //////////////////////////////////////////////////////////////////
   //
@@ -143,10 +143,10 @@ module ahb3lite_sram1rw #(
 
     //default value, prevent warnings
     address_offset = 0;
-	 
+
     //What are the lesser bits in HADDR?
     case (HDATA_SIZE)
-          1024: address_offset = 7'b111_1111; 
+          1024: address_offset = 7'b111_1111;
            512: address_offset = 7'b011_1111;
            256: address_offset = 7'b001_1111;
            128: address_offset = 7'b000_1111;
@@ -167,8 +167,8 @@ module ahb3lite_sram1rw #(
 
     //get number of active lanes for a 1024bit databus (max width) for this HSIZE
     case (hsize)
-       HSIZE_B1024: full_be = 'hffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff; 
-       HSIZE_B512 : full_be = 'hffff_ffff_ffff_ffff;
+       HSIZE_B1024: full_be = 128'hffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff;
+       HSIZE_B512 : full_be = 64'hffff_ffff_ffff_ffff;
        HSIZE_B256 : full_be = 'hffff_ffff;
        HSIZE_B128 : full_be = 'hffff;
        HSIZE_DWORD: full_be = 'hff;
